@@ -9,6 +9,7 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 # Copy the requirements file and install dependencies
+RUN pip install --upgrade pip
 COPY requirements.txt /app/
 RUN pip install -r requirements.txt
 
