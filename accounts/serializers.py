@@ -10,7 +10,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['username', 'password', 'email', 'first_name', 'last_name']
-        extra_kwargs = {'password': {'write_only': True}}
+        extra_kwargs = {'password': {'write_only': True}}  # Avoid displaying on registration payload
 
     def create(self, validated_data):
         user = User.objects.create_user(
@@ -21,3 +21,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             last_name=validated_data['last_name'],
         )
         return user
+    
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField(write_only=True)
