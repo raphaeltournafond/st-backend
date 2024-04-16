@@ -1,0 +1,109 @@
+# How to the Smart Tracker Backend
+
+This guide explains how to set up and use your app, which consists of three services: `web`, `db`, and `pgadmin`. The app uses Docker Compose to manage these services. Follow the steps below to get started.
+
+## Prerequisites
+
+Before you begin, make sure you have the following software installed on your system:
+
+- Docker
+- Docker Compose
+
+## Step 1: Clone the Repository
+
+Clone your app's repository to your local machine:
+
+```bash
+git clone <repository-url>
+cd <repository-directory>
+```
+
+Replace `mysecretkey` with your Django application's secret key.
+
+## Step 2: Build and Start the Services
+
+Use Docker Compose to build and start the services defined in your `docker-compose.yml` file:
+
+```bash
+docker-compose up --build
+```
+
+This command will build the Docker images (if necessary) and start the `web`, `db`, and `pgadmin` containers.
+
+## Step 3: Access the Web Service
+
+Once the services are up and running, you can access your Django web application by opening a web browser and navigating to `http://localhost:8000`. Your Django application should be accessible now.
+
+## Step 4: Access the Database
+
+You can access the PostgreSQL database using pgAdmin. Open a web browser and go to `http://localhost:5050`. Log in with the following credentials:
+
+- **Email**: <admin@admin.com>
+- **Password**: password
+
+Once logged in, you can add a new server connection with the following details:
+
+- **Name**: Choose a name for your connection (e.g., MyDB).
+- **Host name/address**: `db` (This is the name of the PostgreSQL service defined in your `docker-compose.yml`).
+- **Port**: 5432
+- **Username**: admin
+- **Password**: password
+
+Click "Save" to add the server connection.
+
+## Step 5: Using the App
+
+To start the app, you can use the provided `run.sh` script. This script simplifies the process of starting your Docker Compose services. Here's how to run your app:
+
+1. Open your terminal.
+
+2. Navigate to the root directory of your project where the `run.sh` file is located.
+
+3. Run the script using the following command:
+
+    ```bash
+    ./run.sh
+    ```
+
+   The `run.sh` script will execute the following command:
+
+   ```bash
+   docker-compose up
+   ```
+
+   This command will build (if necessary) and start the `web`, `db`, and `pgadmin` containers, making your Django application accessible at `http://localhost:8000` and pgAdmin at `http://localhost:5050`.
+
+## Step 6: Running Migrations
+
+To apply database migrations, you can use the provided `migrate.sh` script. This script simplifies the process of creating and applying migrations to your Django application. Follow these steps:
+
+1. Open your terminal.
+
+2. Navigate to the root directory of your project where the `migrate.sh` file is located.
+
+3. Run the script using the following command:
+
+    ```bash
+    ./migrate.sh
+    ```
+
+   The `migrate.sh` script will execute the following commands within your Docker Compose environment:
+
+   ```bash
+   docker-compose exec web python manage.py makemigrations
+   docker-compose exec web python manage.py migrate
+   ```
+
+   These commands will create and apply any pending database migrations.
+
+## Step 7: Stopping the Services
+
+To stop the services and containers, you can use the following command:
+
+```bash
+docker-compose down
+```
+
+This will stop and remove the containers while preserving your data in the PostgreSQL and pgAdmin volumes.
+
+That's it! You've successfully set up and can now use your app with Docker Compose. Happy coding!
