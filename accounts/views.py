@@ -1,9 +1,11 @@
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from .serializers import UserSerializer, UserRegisterSerializer, UserLoginSerializer
+from .permissions import IsAdminOrSelf
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
@@ -48,3 +50,19 @@ class UserList(APIView):
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
+    
+class UserDetail(APIView):
+    """
+    Manage user details from the system.
+
+    * Requires token authentication.
+    * Only admin or actual users are able to access this view.
+    """
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, IsAdminOrSelf]
+
+    def get(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        self.check_object_permissions(self.request, user)
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
