@@ -14,12 +14,13 @@ class SessionCreate(APIView):
     """
 
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminOrSelf]
 
     def post(self, request):
         serializer = SessionSerializer(data=request.data)
+        self.check_object_permissions(request, request.data.user)
         if serializer.is_valid():
-            serializer.save(user=request.user)  # Set the current user as the session's user
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
