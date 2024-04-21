@@ -3,10 +3,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 from .models import Session
 from .serializers import SessionSerializer
 from .permissions import IsAdminOrSelf
 from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 class SessionCreate(APIView):
     """
@@ -18,8 +20,10 @@ class SessionCreate(APIView):
 
     def post(self, request):
         serializer = SessionSerializer(data=request.data)
-        self.check_object_permissions(request, request.data.user)
         if serializer.is_valid():
+            user_id = request.data[Session.user.field.name]
+            user = get_object_or_404(User, id=user_id)
+            self.check_object_permissions(request, user)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
