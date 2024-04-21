@@ -34,11 +34,11 @@ class SessionDetail(APIView):
     def get(self, request, session_id):
         session = get_object_or_404(Session, id=session_id)
         self.check_object_permissions(request, session.user)
-        serializer = SessionSerializer(Session)
+        serializer = SessionSerializer(session)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def delete(self, request, session_id):
         session = get_object_or_404(Session, id=session_id)
         self.check_object_permissions(request, session.user)
         session.delete()
-        return Response(data={"message": "User deleted successfully"}, status=status.HTTP_200_OK)
+        return Response(data={"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
