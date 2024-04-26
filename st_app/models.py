@@ -7,7 +7,7 @@ class Session(models.Model):
         app_label = 'st_app'
         
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    start_date = models.CharField(max_length=100)
+    end_date = models.CharField(max_length=100)
     data = models.TextField()
 
