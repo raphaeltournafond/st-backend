@@ -66,3 +66,22 @@ class UserDetail(APIView):
         self.check_object_permissions(self.request, user)
         serializer = UserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class TokenDecode(APIView):
+    """
+    Decode the JWT token and return its payload.
+
+    * Requires token authentication.
+    * Only authenticated users are able to access this view.
+    """
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        response = JWTAuthentication().authenticate(request)
+        if response is not None:
+            # unpacking
+            user, token = response
+            return Response(token.payload, status=status.HTTP_200_OK)
+        else:
+            return Response("Bad Token or is missing", status=status.HTTP_400_BAD_REQUEST)
