@@ -46,4 +46,4 @@ class SessionDetail(APIView):
         session = get_object_or_404(Session, id=session_id)
         self.check_object_permissions(request, session.user)
         session.delete()
-        return Response(data={"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        return Response(data={"message": "Session deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
