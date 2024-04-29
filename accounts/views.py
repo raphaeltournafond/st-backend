@@ -58,7 +58,6 @@ class UserDetail(APIView):
     * Only admin or actual users are able to access this view.
     """
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsAdminOrSelf]
 
     def get(self, request, user_id):
         user = get_object_or_404(User, id=user_id)
