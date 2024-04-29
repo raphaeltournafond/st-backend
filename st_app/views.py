@@ -9,7 +9,15 @@ from .serializers import SessionSerializer
 from .permissions import IsAdminOrSelf
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-
+class SessionList(APIView):
+    """
+    View to list all sessions.
+    """
+    def get(self, request, format=None):
+        sessions = Session.objects.all()
+        serializer = SessionSerializer(sessions, many=True)
+        return Response(serializer.data)
+    
 class SessionCreate(APIView):
     """
     View to create a new session.
@@ -17,7 +25,7 @@ class SessionCreate(APIView):
 
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminOrSelf]
-
+    
     def post(self, request):
         serializer = SessionSerializer(data=request.data)
         if serializer.is_valid():
