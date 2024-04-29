@@ -41,7 +41,6 @@ class UserList(APIView):
     * Only admin users are able to access this view.
     """
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAdminUser]
 
     def get(self, request, format=None):
         """
