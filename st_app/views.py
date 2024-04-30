@@ -43,7 +43,6 @@ class SessionDetail(APIView):
     """
 
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsAdminOrSelf]
 
     def get(self, request, session_id):
         session = get_object_or_404(Session, id=session_id)
