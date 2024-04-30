@@ -13,8 +13,9 @@ class SessionList(APIView):
     """
     View to list all sessions.
     """
-    def get(self, request, format=None):
-        sessions = Session.objects.all()
+    def get(self, request, user_id):
+        user = get_object_or_404(User, pk=user_id)
+        sessions = Session.objects.filter(user=user)
         serializer = SessionSerializer(sessions, many=True)
         return Response(serializer.data)
     
