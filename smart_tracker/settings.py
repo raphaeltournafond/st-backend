@@ -67,10 +67,12 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = [
+    'http://' + os.getenv('GLOBAL_IP', '192.168.1.60') + ':3000',
     'http://localhost:3000',
 ]
 
 CORS_ALLOWED_ORIGINS = [
+    'http://' + os.getenv('GLOBAL_IP', '192.168.1.60') + ':3000',
     "http://localhost:3000",
 ]
 
