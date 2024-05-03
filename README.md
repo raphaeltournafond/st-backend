@@ -1,2 +1,2 @@
-# smart-tracker
-Backend of the Smart Tracker written in Python using the Django framework
+# st-backend
+The Django Backend of the Smart Tracker
